@@ -21,7 +21,7 @@ const gameBoard = document.querySelector("#gameBoard");
 const newButton = document.querySelector("#newButton");
 const cell = document.querySelector("cell");
 const flagButton = document.querySelector("#flagButton");
-const resultMessage = document.querySelector("h3");
+const resultMessage = document.querySelector("h2");
 
 
 /* ----- event listeners -----*/
@@ -71,7 +71,6 @@ for (let i=0; i<boardSize; i++) {
   if (gameElements.board[i] === 0) {
     gameElements.board[i] = "space";
   }
- 
 }
 console.log("mines array: ", gameElements.board);
 render();
@@ -87,7 +86,7 @@ function handleClick (e) {
   if (gameElements.board[clickCell.id] === "bomb") {
     resultMessage.innerText = "😵";
     let remaining = document.querySelectorAll(".hidden");
-    remaining.classList.remove(`${gameElements.state}`);
+    remaining.classList.remove("hidden");
     }
   } 
 
@@ -114,12 +113,8 @@ function handleNumCount () {
 
 /* ----- render functions -----*/
 function render() {
-// // renderTable ();
-// // renderClick ();
-// // renderFlagging ();
-// // renderMinesCount () 
+renderMinesCount ();
 renderGameover();
-// renderNewgame ();
 };
 
 
@@ -127,14 +122,14 @@ renderGameover();
 // let minesNum = document.querySelector("minesCount")
 // minesNum.innerText = 10;
 // }
-
-// function renderNewgame () {
-//   while (gameBoard.firstChild) {
-//     gameBoard.removeChild(board.firstChild)
-//   };
-// }
+function renderMinesCount () {
+  
+}
 
 function renderGameover() {
+//refresh the board
+  gameBoard.innerHTML = '';
+
 //running the new board
   for (let i=0; i<boardSize; i++) {
   let cellDiv = document.createElement("cell");

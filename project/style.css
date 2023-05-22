@@ -40,6 +40,9 @@ cell {
   align-items: center;
 }
 
+count {
+  font-size: 20px;
+}
 
 
 .Nbomb {
@@ -48,7 +51,7 @@ cell {
 }
 
 .Nspace {
-  background-color: white;
+  background-color: lightgray;
   font-size: 10px;
 }
 
