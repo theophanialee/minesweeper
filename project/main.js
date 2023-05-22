@@ -79,14 +79,19 @@ render();
 
 function handleClick (e) {
   let clickCell = e.target;
-  clickCell.classList.remove(`${gameElements.state}`);
+  clickCell.classList.remove(`${gameElements.state}`)
   clickCell.classList.add(`N${gameElements.board[clickCell.id]}`)
   clickCell.innerText = (`${gameElements.board[clickCell.id]}`)
 
   if (gameElements.board[clickCell.id] === "bomb") {
     resultMessage.innerText = "😵";
+
     let remaining = document.querySelectorAll(".hidden");
-    remaining.classList.remove("hidden");
+    for (let i = 0; i < remaining.length; i++) {
+      remaining[i].classList.remove(`${gameElements.state}`);
+      remaining[i].classList.add(`N${gameElements.board[i]}`);
+      remaining[i].innerText = (`${gameElements.board[i]}`);
+    }
     }
   } 
 
@@ -123,7 +128,7 @@ renderGameover();
 // minesNum.innerText = 10;
 // }
 function renderMinesCount () {
-  
+
 }
 
 function renderGameover() {
