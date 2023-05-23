@@ -5,6 +5,10 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Dongle&display=swap" rel="stylesheet">
     <title>Minesweeper</title>
   </head>
   <body>
@@ -12,16 +16,20 @@
     <script type="module" src="/main.js"></script>
   
   <div id="startScreen">
-    <h1>Welcome to Minesweeper</h1>
-    <size>Enter your board size: 
-      <br> (eg 8 = 8x8 board)
+    <h1>Welcome to Pha Cafe</h1>
+    <h3>~ Guide ~
+      <br> To win: Flag all the bombs!
+      <br> The 'Flags:' count above your board is the number of bombs
+    </h3>
+    <h3 id="sizeEl">Enter your board size: 
       <br> <input id="sizeInput"/>
+      <br> <i>(eg 8 generates a 8x8 board)</i>
       <br> <button id="sizeButton">Start</button>
-    </size>
+    </h3>
   </div>
 
   <div id="gameScreen" class="hide">
-    <h1>Minesweeper</h1>
+    <h1>Pha Cafe</h1>
     <h2>😊</h2>
     <count></count>
     <div id="gameBoard"></div>
@@ -31,5 +39,6 @@
     <div id="endScreen"></div>
     
     <script type="module" src="/main.js"></script>
+    
   </body>
 </html>

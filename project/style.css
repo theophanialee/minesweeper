@@ -1,14 +1,39 @@
 body {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Dongle;
+  color: rgb(92, 92, 92);
+  font-size: 20px;
   text-align: center;
-  background-color: rgb(253, 240, 219);
+  background-color: rgb(238, 216, 255);
   line-height: 30px;
-
 }
 
+h1 {
+  font-size: 70px;
+}
+
+h3 {
+  font-size: 25px;
+  background-color: rgb(254, 239, 189);
+  width: 300px;
+  height: 120px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: rgb(154, 152, 90) 0 10px 20px -10px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+#sizeEl {
+  background-color: pink;
+  width: 300px;
+  height: 200px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: rgb(154, 90, 142) 0 10px 20px -10px;
+  margin: 0 auto;
+}
 div {
   position: center;
-  
 }
 
 .hide {
@@ -24,16 +49,17 @@ div {
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  background-color: darkgray;
+  background-color: rgb(202, 235, 255);
+  box-shadow: rgb(178, 245, 255) 0 10px 20px -10px;
 }
 
 cell {
   height: 48px;
   width: 48px;
-  background-color: gray;
-  border: 1px solid whitesmoke;
+  background-color: rgb(162, 212, 255);
+  border: 1px solid rgb(211, 235, 255);
+  box-shadow: rgb(178, 245, 255) 0 10px 20px -10px;
   border-radius: 5px;
-
   font-size: 30px;
   display: flex;
   justify-content: center;
@@ -41,15 +67,29 @@ cell {
 }
 
 count {
-  font-size: 20px;
+  font-size: 30px;
 }
 
 button {
-  margin-top: 20px;
-  border: 3px solid gray;
-  border-radius: 5px;
-  font-size: 15 px;
-  background-color: rgb(227, 216, 192);
+  background: rgb(254, 239, 189);
+  border-radius: 999px;
+  box-shadow: rgb(95, 91, 100) 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: rgb(89, 89, 89);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 24px;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+  margin-top: 30px;
 }
 
 input {
@@ -58,46 +98,45 @@ input {
   height: 30px;
   font-size: 20px;
   border-radius: 5px;
-  margin-top: 15px
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .Nbomb {
-  background-color: red;
-  font-size: 30px;
+  background-color: rgb(136, 106, 83);
+  font-size: 20px;
 }
 
 .N0 {
-  background-color: lightgray;
+  background-color: rgb(230, 241, 255);
   font-size: 30px;
   
 }
 
 .N1 {
   color: blue;
-  background-color: lightgray;
+  background-color: rgb(230, 241, 255);
 }
 
 .N2 {
-  color: darkgreen;
-  background-color: lightgray;
+  color: rgb(42, 188, 42);
+  background-color: rgb(230, 241, 255);
 }
 
 .N3 {
-  color: darkred;
-  background-color: lightgray;
+  color: rgb(255, 0, 0);
+  background-color: rgb(230, 241, 255);
 }
 
 .N4 {
   color: darkblue;
-  background-color: lightgray;
+  background-color: rgb(230, 241, 255);
   }
 
-[status = "hidden"] {
-  background-color: gray;
-}
-  
+
 .flag {
-  background-color: rgb(196, 238, 111);
+  background-color: rgb(202	239	184);
   font-size: 20px;
 }
+
 

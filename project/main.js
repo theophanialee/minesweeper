@@ -1,6 +1,3 @@
-/* ----- constants -----*/
-const surrounding = 8;
-
 /* ----- state variables -----*/
 const gameElements = {
   bombArr: [],
@@ -18,11 +15,11 @@ const display = {
 
 /* ----- cached elements  -----*/
 const sizeButton = document.querySelector("#sizeButton");
-const sizeInput = document.querySelector("size");
+const sizeInput = document.querySelector("#sizeEl");
+const startScreen = document.querySelector("#startScreen");
 const gameScreen = document.querySelector("#gameScreen");
 const gameBoard = document.querySelector("#gameBoard");
 const newButton = document.querySelector("#newButton");
-// const cell = document.querySelector("cell");
 const flagButton = document.querySelector("#flagButton");
 const resultMessage = document.querySelector("h2");
 const flagCount = document.querySelector("count");
@@ -36,12 +33,10 @@ function handleStart () {
   gameElements.mines = size*2-5; 
   gameBoard.style.height = `${size*50}px`;
   gameBoard.style.width = `${size*50}px`;
-  gameBoard.style.border = "5px solid gray";
-  render();
+  gameBoard.style.border = "5px solid white";
 }
 
 function handleSetup() {
-  display.screen = "startScreen";
   // set up table as board size
   //create mines and spaces in seperate arrays > combine > randomise > split
   const minesArray = Array(gameElements.mines).fill("bomb");
@@ -58,14 +53,13 @@ render ();
 function handleClick (e) {
   let clickCell = e.target;
   console.log(clickCell)
-  clickCell.classList.remove(`${gameElements.state}`)
+  clickCell.classList.remove(gameElements.state)
   let x = parseInt(clickCell.id[0]);
   let y = parseInt(clickCell.id[2]);
   console.log(clickCell.id)
   console.log("xcoord: ", x)
   console.log("ycoord: ", y)
   clickCell.classList.add(`N${countBombs(gameElements.bombArr,x,y)}`)
-
   //put into render function?
   if (gameElements.bombArr[x][y] === "bomb") {
     clickCell.innerText = ("💣")
@@ -101,23 +95,20 @@ function handleFlagging (e) {
   console.log(flagCell.id)
   console.log(flagCell);
   if (flagCell.classList.contains("flag") === false) {
-    flagCell.classList.add("flag") 
-    flagCell.innerText = "🚩"
-    gameElements.flags+=1
-    flagCount.innerText = `Flags: ${[gameElements.mines] - [gameElements.flags]}`
+    flagCell.classList.add("flag"); 
+    flagCell.innerText = "🚩";
+    gameElements.flags+=1;
+    flagCount.innerText = `Flags: ${gameElements.mines - gameElements.flags}`;
   } else if (flagCell.classList.contains("flag") === true) {
-    flagCell.classList.remove("flag") 
-    flagCell.innerText = ""
-    gameElements.flags-=1
-    flagCount.innerText = `Flags: ${[gameElements.mines] - [gameElements.flags]}`
+    flagCell.classList.remove("flag") ;
+    flagCell.innerText = "";
+    gameElements.flags-=1;
+    flagCount.innerText = `Flags: ${gameElements.mines - gameElements.flags}`;
   }
   checkWin (flagCell, x,y);
-  console.log("flags: ", gameElements.flags)
+  console.log("flags: ", gameElements.flags);
   }
 
-function handleNumCount () { 
-  
-}
 
 /* ----- render functions -----*/
 function render() {
@@ -143,7 +134,7 @@ function renderNewBoard () {
     for (let j = 0; j < gameElements.size; j++) {
       let cellDiv = document.createElement("cell");
       cellDiv.id = `${[i]}-${[j]}`;
-      cellDiv.classList.add(`${gameElements.state}`);
+      cellDiv.classList.add(gameElements.state);
       // cellDiv.innerText = gameElements.board[i];
       gameBoard.append(cellDiv);
     }
@@ -158,7 +149,10 @@ function renderResult () {
 
 // upon event
 function main() {
-  sizeButton.addEventListener ("click", handleStart);
+  sizeButton.addEventListener ("click", function() {
+    handleStart();
+    handleSetup ();
+  });
   newButton.addEventListener ("click", handleSetup);
   gameBoard.addEventListener ("contextmenu", handleFlagging);
   gameBoard.addEventListener ("click", handleClick);
