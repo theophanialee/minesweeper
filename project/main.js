@@ -13,6 +13,7 @@ const display = {
   screen: "startScreen",
 }
 
+
 /* ----- cached elements  -----*/
 const sizeButton = document.querySelector("#sizeButton");
 const sizeInput = document.querySelector("#sizeEl");
@@ -23,6 +24,7 @@ const newButton = document.querySelector("#newButton");
 const flagButton = document.querySelector("#flagButton");
 const resultMessage = document.querySelector("h2");
 const flagCount = document.querySelector("count");
+const backgroundMusic = document.getElementById('backgroundMusic');
 
 /* ----- event listeners -----*/
 function handleStart () {
@@ -34,6 +36,7 @@ function handleStart () {
   gameBoard.style.height = `${size*50}px`;
   gameBoard.style.width = `${size*50}px`;
   gameBoard.style.border = "5px solid white";
+  backgroundMusic.play();
 }
 
 function handleSetup() {
@@ -64,7 +67,7 @@ function handleClick (e) {
   if (gameElements.bombArr[x][y] === "bomb") {
     clickCell.innerText = ("💣")
     resultMessage.innerText = "😵"
-    
+    backgroundMusic.pause();
     setTimeout(function() {
       alert("YOU LOSE! 😵");
     }, 200);
