@@ -16,7 +16,7 @@ const gameElements = {
   let board = gameElements.board;
 
 /* ----- cached elements  -----*/
-const sizeButton = document.querySelector("sizeButton");
+const sizeButton = document.querySelector("#sizeButton");
 const gameScreen = document.querySelector("#gameScreen");
 const gameBoard = document.querySelector("#gameBoard");
 const newButton = document.querySelector("#newButton");
@@ -29,8 +29,11 @@ const flagCount = document.querySelector("count");
 /* ----- event listeners -----*/
 function handleStart () {
   const inputSize = document.querySelector("#sizeInput");
-  const size = inputSize.value;
+  const size = parseInt(inputSize.value);
   gameElements.size = size;
+  gameElements.mines = size*2-5; 
+  gameBoard.style.height = `${size*50}px`;
+  gameBoard.style.width = `${size*50}px`;
   render();
 }
 
@@ -64,6 +67,11 @@ function handleClick (e) {
   if (gameElements.bombArr[x][y] === "bomb") {
     clickCell.innerText = ("💣")
     resultMessage.innerText = "😵"
+    
+    setTimeout(function() {
+      alert("YOU LOSE! 😵");
+    }, 200);
+
      // for (let i=0; i < gameElements.width; i++) {
     //   for (let j = 0; j < gameElements.width; j++) {
     //     if (gameElements.bombArr[i][j] === "bomb" && cell.id === `${[i]-[j]}`) {
@@ -192,7 +200,9 @@ function checkWin (flagCell,x,y) {
   }
   if (gameElements.correctFlag === gameElements.mines) {
     resultMessage.innerText = "🥳";
-    alert("YOU WON!");
+    setTimeout(function() {
+      alert("YOU WON! 🥳");
+    }, 200);
   }
   console.log ("correct: ", gameElements.correctFlag)
 }

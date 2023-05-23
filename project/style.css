@@ -10,15 +10,6 @@ div {
   
 }
 
-/* #gameBoard {
-  background-color: rgb(195, 195, 195);
-  width: 90 px;
-  min-width: 30px;
-  height: 30px;
-  min-height: 30px;
-  border: 1px solid black;    
-} */
-
 #gameBoard {
   height: 400px;
   width: 400px;
@@ -34,7 +25,7 @@ cell {
   height: 48px;
   width: 48px;
   background-color: gray;
-  border: 1px solid whitesmoke;
+  border: 1px solid rgb(253, 240, 219);
   border-radius: 5px;
 
   font-size: 30px;
