@@ -1,11 +1,12 @@
 /* ----- constants -----*/
 const surrounding = 8;
-
+let total = 0
 /* ----- state variables -----*/
 const gameElements = {
+  bombArr: [],
   board: [],
-  width: 8,
-  mines: 10,
+  width: 4,
+  mines: 5,
   alive: true,
   flagged: false,
   state: "hidden",
@@ -14,12 +15,13 @@ const gameElements = {
   const boardSize = gameElements.width*gameElements.width
   let board = gameElements.board;
 
+  
 
 /* ----- cached elements  -----*/
 const gameScreen = document.querySelector("#gameScreen");
 const gameBoard = document.querySelector("#gameBoard");
 const newButton = document.querySelector("#newButton");
-const cell = document.querySelector("cell");
+const cell = document.querySelectorAll("cell");
 const flagButton = document.querySelector("#flagButton");
 const resultMessage = document.querySelector("h2");
 
@@ -32,67 +34,37 @@ function handleStart () {
 
 
 function handleSetup() {
- // set up table as board size
-//create mines and spaces in seperate arrays > combine > randomise > split
-const minesArray = Array(gameElements.mines).fill("bomb");
-const spacesArray = Array(boardSize - gameElements.mines)
-.fill("space");
-const combArray = spacesArray.concat(minesArray);
-//https://sebhastian.com/shuffle-array-javascript/
-const randomisedArray = combArray.sort(() => Math.random()-.5);
+  // set up table as board size
+  //create mines and spaces in seperate arrays > combine > randomise > split
+  const minesArray = Array(gameElements.mines).fill("bomb");
+  const spacesArray = Array(boardSize - gameElements.mines)
+  .fill("0"); // 0 indicates space
+  const combArray = spacesArray.concat(minesArray);
+  //https://sebhastian.com/shuffle-array-javascript/
+  const randomisedArray = combArray.sort(() => Math.random()-.5);
 
-for (let i=0; i<boardSize; i++) {
- let total = 0
- const topLeftId = (i - gameElements.width - 1)
- const topCenterId = (i - gameElements.width)
- const topRightId = (i - gameElements.width + 1)
- const rightId = (i + 1)
- const bottRightId = (i + gameElements.width + 1)
- const bottCenterId = (i + gameElements.width)
- const bottLeftId = (i + gameElements.width - 1)
- const leftId = (i - 1)
-  // bombed
-  if (randomisedArray[i] === "bomb") {
-    total = "bomb"
-  } //space > count number of bombs and make new array
-  else if (randomisedArray[i] === "space") {
-    if (randomisedArray[topLeftId] === "bomb") { total = total + 1 }
-    if (randomisedArray[topCenterId] === "bomb") { total = total + 1 } 
-    if (randomisedArray[topRightId] === "bomb") { total = total + 1} 
-    if (randomisedArray[rightId] === "bomb") { total = total + 1 } 
-    if (randomisedArray[bottRightId] === "bomb") { total = total + 1 } 
-    if (randomisedArray[bottCenterId] === "bomb") { total = total + 1 } 
-    if (randomisedArray[bottLeftId] === "bomb") { total = total + 1 } 
-    if (randomisedArray[leftId] === "bomb") { total = total + 1 }
-  }
-    gameElements.board.push(total);
-
-  // replace 0 with indication of space 😊
-  if (gameElements.board[i] === 0) {
-    gameElements.board[i] = "space";
-  }
-}
-console.log("mines array: ", gameElements.board);
-render();
-
+  gameElements.bombArr = rowArray(randomisedArray, gameElements.width);
+  console.log("bombArr: ", gameElements.bombArr);
+render ();
 }
 
 function handleClick (e) {
   let clickCell = e.target;
+  console.log(clickCell)
   clickCell.classList.remove(`${gameElements.state}`)
-  clickCell.classList.add(`N${gameElements.board[clickCell.id]}`)
-  clickCell.innerText = (`${gameElements.board[clickCell.id]}`)
-
-  if (gameElements.board[clickCell.id] === "bomb") {
-    resultMessage.innerText = "😵";
-
-    let remaining = document.querySelectorAll(".hidden");
-    for (let i = 0; i < remaining.length; i++) {
-      remaining[i].classList.remove(`${gameElements.state}`);
-      remaining[i].classList.add(`N${gameElements.board[i]}`);
-      remaining[i].innerText = (`${gameElements.board[i]}`);
-    }
-    }
+  let x = parseInt(clickCell.id[0]);
+  let y = parseInt(clickCell.id[2]);
+  console.log(clickCell.id)
+  console.log("xcoord: ", x)
+  console.log("ycoord: ", y)
+  clickCell.classList.add(`N${countBombs(gameElements.bombArr,x,y)}`)
+  if (gameElements.bombArr[x][y] === "bomb") {
+    clickCell.innerText = ("💣")
+  }
+  if (gameElements.bombArr[x][y] === "0") {
+    clickCell.innerText = (`${countBombs(gameElements.bombArr,x,y)}`)
+  }
+  console.log ("total: ",countBombs(gameElements.bombArr,x,y))
   } 
 
 function handleFlagging (e) {
@@ -100,20 +72,25 @@ function handleFlagging (e) {
   e.preventDefault()
   // console.log (flagCell.classList.value);
   // console.log (flagCell.className);
+  let x = parseInt(flagCell.id[0]);
+  let y = parseInt(flagCell.id[2]);
+  console.log(flagCell.id)
   console.log(flagCell);
   if (flagCell.classList.contains("flag") === false) {
     flagCell.classList.add("flag") 
-    // flagCell.innerText = "🚩"
+    flagCell.innerText = "🚩"
   } else if (flagCell.classList.contains("flag") === true) {
     flagCell.classList.remove("flag") 
-    // flagCell.innerText = `${gameBoard.board[flagCell.id]}`;
+    flagCell.innerText = ""
   }
-}
+  checkWin (flagCell, x,y);
+ 
+  }
+
 
 function handleNumCount () { 
   
 }
-
 
 
 /* ----- render functions -----*/
@@ -136,30 +113,23 @@ function renderGameover() {
   gameBoard.innerHTML = '';
 
 //running the new board
-  for (let i=0; i<boardSize; i++) {
-  let cellDiv = document.createElement("cell");
-  cellDiv.id = i;
-  cellDiv.classList.add(`${gameElements.state}`);
-  // cellDiv.innerText = gameElements.board[i];
-  gameBoard.append(cellDiv);
-  board.push(cellDiv);
+  for (let i=0; i < gameElements.width; i++) {
+    for (let j = 0; j < gameElements.width; j++) {
+      let cellDiv = document.createElement("cell");
+      cellDiv.id = `${[i]}-${[j]}`;
+      cellDiv.classList.add(`${gameElements.state}`);
+      // cellDiv.innerText = gameElements.board[i];
+      gameBoard.append(cellDiv);
+    }
   }
 }
 
 function renderResult () {
-  let correctFlag = 0;
-  for (let i=0; i<boardSize; i++) {
-    if (gameElements.board[i].classList.contains ("flag") && gameElements.board[i].classList.contains ("Nbomb")) {
-      correctFlag ++
-    }
-    if (correctFlag === gameElements.mines) {
-      resultMessage.innerText = "🥳";
-    }
-  }
+  
 }
 
 
-/* ----- other functions -----*/
+/* ----- functions -----*/
 
 // upon event
 function controller() {
@@ -167,8 +137,53 @@ function controller() {
   gameBoard.addEventListener ("contextmenu", handleFlagging);
   gameBoard.addEventListener ("click", handleClick);
   }
-
   //run the main function
 controller();
 
+function rowArray(array, chunkSize) {
+  const result = [];
+  for (let i = 0; i < array.length; i += chunkSize) {
+    result.push(array.slice(i, i + chunkSize));
+  }
+  return result;
+}
 
+function countBombs (arr,x,y) {
+
+  let total = 0
+  if (arr[x][y] === "bomb") {
+    total = "bomb"
+  }
+  if (arr[x][y] == 0) {
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        if (i == 0 && j == 0) {
+          continue;
+        }
+        if ( (x + i) < 0 || (x + i) > gameElements.width-1) {
+          continue;
+        }
+        if ( (y + j) < 0 || (y + j) > gameElements.width-1) {
+          continue;
+       }
+       if (arr[x+i][y+j] === "bomb") {
+          total++;
+        } else {
+          total = total
+        }
+      }
+    }
+  }
+    return total
+}
+
+function checkWin (flagCell,x,y) {
+  let correctFlag = 0;
+  if (gameElements.bombArr[x][y] === "bomb" && flagCell.classList.contains("flag")) {
+    correctFlag ++
+  }
+  if (correctFlag === gameElements.bombArr) {
+    resultMessage.innerText = "🥳";
+  }
+  console.log ("correct: ", correctFlag)
+}
