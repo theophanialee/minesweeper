@@ -1,6 +1,6 @@
 /* ----- constants -----*/
 const surrounding = 8;
-let total = 0
+
 /* ----- state variables -----*/
 const gameElements = {
   bombArr: [],
@@ -12,37 +12,40 @@ const gameElements = {
   flags: 0,
   }
 
-  const boardSize = gameElements.size*gameElements.size
-  let board = gameElements.board;
+const display = {
+  screen: "startScreen",
+}
 
 /* ----- cached elements  -----*/
 const sizeButton = document.querySelector("#sizeButton");
+const sizeInput = document.querySelector("size");
 const gameScreen = document.querySelector("#gameScreen");
 const gameBoard = document.querySelector("#gameBoard");
 const newButton = document.querySelector("#newButton");
-const cell = document.querySelectorAll("cell");
+// const cell = document.querySelector("cell");
 const flagButton = document.querySelector("#flagButton");
 const resultMessage = document.querySelector("h2");
 const flagCount = document.querySelector("count");
 
-
 /* ----- event listeners -----*/
 function handleStart () {
+  display.screen = "gameScreen";
   const inputSize = document.querySelector("#sizeInput");
   const size = parseInt(inputSize.value);
   gameElements.size = size;
   gameElements.mines = size*2-5; 
   gameBoard.style.height = `${size*50}px`;
   gameBoard.style.width = `${size*50}px`;
+  gameBoard.style.border = "5px solid gray";
   render();
 }
 
-
 function handleSetup() {
+  display.screen = "startScreen";
   // set up table as board size
   //create mines and spaces in seperate arrays > combine > randomise > split
   const minesArray = Array(gameElements.mines).fill("bomb");
-  const spacesArray = Array(boardSize - gameElements.mines)
+  const spacesArray = Array(gameElements.size*gameElements.size - gameElements.mines)
   .fill("0"); // 0 indicates space
   const combArray = spacesArray.concat(minesArray);
   //https://sebhastian.com/shuffle-array-javascript/
@@ -72,14 +75,15 @@ function handleClick (e) {
       alert("YOU LOSE! 😵");
     }, 200);
 
-     // for (let i=0; i < gameElements.width; i++) {
-    //   for (let j = 0; j < gameElements.width; j++) {
-    //     if (gameElements.bombArr[i][j] === "bomb" && cell.id === `${[i]-[j]}`) {
-    //       cell.innerText = ("💣")
-    //       cell.classList.add(`Nbomb`)
-    //     }
-    //   }
-    // }
+     for (let i=0; i < gameElements.size; i++) {
+      for (let j = 0; j < gameElements.size; j++) {
+        if (gameElements.bombArr[i][j] === "bomb" ) {
+        let cellElement = document.getElementById(`${[i]}-${[j]}`);
+          cellElement.innerText = ("💣")
+          cellElement.classList.add(`Nbomb`)
+        }
+      }
+    }
   }
   if (gameElements.bombArr[x][y] === "0") {
     clickCell.innerText = (`${countBombs(gameElements.bombArr,x,y)}`)
@@ -111,17 +115,23 @@ function handleFlagging (e) {
   console.log("flags: ", gameElements.flags)
   }
 
-
 function handleNumCount () { 
   
 }
-
 
 /* ----- render functions -----*/
 function render() {
 renderNewBoard();
 renderResult();
+renderScreen();
 };
+
+function renderScreen() {
+  startScreen.classList.add("hide");
+  gameScreen.classList.add("hide");
+  // scoreScreen.classList.add("hide");
+  document.querySelector(`#${display.screen}`).classList.remove("hide"); //to alter the information to show the screen
+}
 
 function renderNewBoard () {
 //refresh the board
@@ -139,7 +149,6 @@ function renderNewBoard () {
     }
   }
 }
-
 function renderResult () {
   
 }

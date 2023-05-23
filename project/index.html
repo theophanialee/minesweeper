@@ -8,29 +8,28 @@
     <title>Minesweeper</title>
   </head>
   <body>
-   
+  
     <script type="module" src="/main.js"></script>
   
-    <div id="startScreen"></div>
+  <div id="startScreen">
+    <h1>Welcome to Minesweeper</h1>
+    <size>Enter your board size: 
+      <br> (eg 8 = 8x8 board)
+      <br> <input id="sizeInput"/>
+      <br> <button id="sizeButton">Start</button>
+    </size>
+  </div>
 
-    <div id="gameScreen"></div>
-
+  <div id="gameScreen" class="hide">
     <h1>Minesweeper</h1>
-
-    <size>Insert board size: <input id="sizeInput"/></size>
-
-    <button id="sizeButton"> Start </button>
-
     <h2>😊</h2>
-
     <count></count>
-    
     <div id="gameBoard"></div>
+    <button id="newButton"> New game </button>
+  </div>
 
     <div id="endScreen"></div>
     
-    <button id="newButton"> New game </button>
-
     <script type="module" src="/main.js"></script>
   </body>
 </html>

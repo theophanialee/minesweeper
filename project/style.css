@@ -2,6 +2,7 @@ body {
   font-family: 'Courier New', Courier, monospace;
   text-align: center;
   background-color: rgb(253, 240, 219);
+  line-height: 30px;
 
 }
 
@@ -10,12 +11,17 @@ div {
   
 }
 
+.hide {
+  display: none;
+}
+
 #gameBoard {
-  height: 400px;
-  width: 400px;
-  border: 5px solid gray;
+  height: 0px;
+  width: 0px;
+  border: 0px;
   border-radius: 5px;
   margin: 0 auto;
+  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   background-color: darkgray;
@@ -25,7 +31,7 @@ cell {
   height: 48px;
   width: 48px;
   background-color: gray;
-  border: 1px solid rgb(253, 240, 219);
+  border: 1px solid whitesmoke;
   border-radius: 5px;
 
   font-size: 30px;
@@ -36,7 +42,6 @@ cell {
 
 count {
   font-size: 20px;
-  
 }
 
 button {
@@ -53,6 +58,7 @@ input {
   height: 30px;
   font-size: 20px;
   border-radius: 5px;
+  margin-top: 15px
 }
 
 .Nbomb {
@@ -94,3 +100,4 @@ input {
   background-color: rgb(196, 238, 111);
   font-size: 20px;
 }
+
