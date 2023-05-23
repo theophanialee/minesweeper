@@ -4,31 +4,33 @@ let total = 0
 /* ----- state variables -----*/
 const gameElements = {
   bombArr: [],
-  board: [],
-  width: 4,
-  mines: 5,
+  size: 8,
+  mines: 3,
   alive: true,
-  flagged: false,
   state: "hidden",
+  correctFlag: 0,
+  flags: 0,
   }
 
-  const boardSize = gameElements.width*gameElements.width
+  const boardSize = gameElements.size*gameElements.size
   let board = gameElements.board;
 
-  
-
 /* ----- cached elements  -----*/
+const sizeButton = document.querySelector("sizeButton");
 const gameScreen = document.querySelector("#gameScreen");
 const gameBoard = document.querySelector("#gameBoard");
 const newButton = document.querySelector("#newButton");
 const cell = document.querySelectorAll("cell");
 const flagButton = document.querySelector("#flagButton");
 const resultMessage = document.querySelector("h2");
+const flagCount = document.querySelector("count");
 
 
 /* ----- event listeners -----*/
 function handleStart () {
-  game.screen = "gameScreen"; 
+  const inputSize = document.querySelector("#sizeInput");
+  const size = inputSize.value;
+  gameElements.size = size;
   render();
 }
 
@@ -42,8 +44,7 @@ function handleSetup() {
   const combArray = spacesArray.concat(minesArray);
   //https://sebhastian.com/shuffle-array-javascript/
   const randomisedArray = combArray.sort(() => Math.random()-.5);
-
-  gameElements.bombArr = rowArray(randomisedArray, gameElements.width);
+  gameElements.bombArr = rowArray(randomisedArray, gameElements.size);
   console.log("bombArr: ", gameElements.bombArr);
 render ();
 }
@@ -58,8 +59,19 @@ function handleClick (e) {
   console.log("xcoord: ", x)
   console.log("ycoord: ", y)
   clickCell.classList.add(`N${countBombs(gameElements.bombArr,x,y)}`)
+
+  //put into render function?
   if (gameElements.bombArr[x][y] === "bomb") {
     clickCell.innerText = ("💣")
+    resultMessage.innerText = "😵"
+     // for (let i=0; i < gameElements.width; i++) {
+    //   for (let j = 0; j < gameElements.width; j++) {
+    //     if (gameElements.bombArr[i][j] === "bomb" && cell.id === `${[i]-[j]}`) {
+    //       cell.innerText = ("💣")
+    //       cell.classList.add(`Nbomb`)
+    //     }
+    //   }
+    // }
   }
   if (gameElements.bombArr[x][y] === "0") {
     clickCell.innerText = (`${countBombs(gameElements.bombArr,x,y)}`)
@@ -79,12 +91,16 @@ function handleFlagging (e) {
   if (flagCell.classList.contains("flag") === false) {
     flagCell.classList.add("flag") 
     flagCell.innerText = "🚩"
+    gameElements.flags+=1
+    flagCount.innerText = `Flags: ${[gameElements.mines] - [gameElements.flags]}`
   } else if (flagCell.classList.contains("flag") === true) {
     flagCell.classList.remove("flag") 
     flagCell.innerText = ""
+    gameElements.flags-=1
+    flagCount.innerText = `Flags: ${[gameElements.mines] - [gameElements.flags]}`
   }
   checkWin (flagCell, x,y);
- 
+  console.log("flags: ", gameElements.flags)
   }
 
 
@@ -95,26 +111,18 @@ function handleNumCount () {
 
 /* ----- render functions -----*/
 function render() {
-renderMinesCount ();
-renderGameover();
+renderNewBoard();
+renderResult();
 };
 
-
-// function renderTable() {
-// let minesNum = document.querySelector("minesCount")
-// minesNum.innerText = 10;
-// }
-function renderMinesCount () {
-
-}
-
-function renderGameover() {
+function renderNewBoard () {
 //refresh the board
   gameBoard.innerHTML = '';
-
+  flagCount.innerText = `Flags: ${[gameElements.mines]}`
+  resultMessage.innerText = "😊"
 //running the new board
-  for (let i=0; i < gameElements.width; i++) {
-    for (let j = 0; j < gameElements.width; j++) {
+  for (let i=0; i < gameElements.size; i++) {
+    for (let j = 0; j < gameElements.size; j++) {
       let cellDiv = document.createElement("cell");
       cellDiv.id = `${[i]}-${[j]}`;
       cellDiv.classList.add(`${gameElements.state}`);
@@ -132,13 +140,14 @@ function renderResult () {
 /* ----- functions -----*/
 
 // upon event
-function controller() {
+function main() {
+  sizeButton.addEventListener ("click", handleStart);
   newButton.addEventListener ("click", handleSetup);
   gameBoard.addEventListener ("contextmenu", handleFlagging);
   gameBoard.addEventListener ("click", handleClick);
   }
   //run the main function
-controller();
+main();
 
 function rowArray(array, chunkSize) {
   const result = [];
@@ -160,10 +169,10 @@ function countBombs (arr,x,y) {
         if (i == 0 && j == 0) {
           continue;
         }
-        if ( (x + i) < 0 || (x + i) > gameElements.width-1) {
+        if ( (x + i) < 0 || (x + i) > gameElements.size-1) {
           continue;
         }
-        if ( (y + j) < 0 || (y + j) > gameElements.width-1) {
+        if ( (y + j) < 0 || (y + j) > gameElements.size-1) {
           continue;
        }
        if (arr[x+i][y+j] === "bomb") {
@@ -178,12 +187,13 @@ function countBombs (arr,x,y) {
 }
 
 function checkWin (flagCell,x,y) {
-  let correctFlag = 0;
   if (gameElements.bombArr[x][y] === "bomb" && flagCell.classList.contains("flag")) {
-    correctFlag ++
+    gameElements.correctFlag++
   }
-  if (correctFlag === gameElements.bombArr) {
+  if (gameElements.correctFlag === gameElements.mines) {
     resultMessage.innerText = "🥳";
+    alert("YOU WON!");
   }
-  console.log ("correct: ", correctFlag)
+  console.log ("correct: ", gameElements.correctFlag)
 }
+
