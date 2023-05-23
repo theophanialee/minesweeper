@@ -25,6 +25,8 @@ const flagButton = document.querySelector("#flagButton");
 const resultMessage = document.querySelector("h2");
 const flagCount = document.querySelector("count");
 const backgroundMusic = document.getElementById('backgroundMusic');
+const loseMusic = document.getElementById('loseMusic');
+const winMusic = document.getElementById('winMusic');
 
 /* ----- event listeners -----*/
 function handleStart () {
@@ -42,6 +44,7 @@ function handleStart () {
 function handleSetup() {
   // set up table as board size
   //create mines and spaces in seperate arrays > combine > randomise > split
+  backgroundMusic.play();
   const minesArray = Array(gameElements.mines).fill("bomb");
   const spacesArray = Array(gameElements.size*gameElements.size - gameElements.mines)
   .fill("0"); // 0 indicates space
@@ -68,6 +71,7 @@ function handleClick (e) {
     clickCell.innerText = ("💣")
     resultMessage.innerText = "😵"
     backgroundMusic.pause();
+    loseMusic.play();
     setTimeout(function() {
       alert("YOU LOSE! 😵");
     }, 200);
@@ -206,6 +210,8 @@ function checkWin (flagCell,x,y) {
   }
   if (gameElements.correctFlag === gameElements.mines) {
     resultMessage.innerText = "🥳";
+    winMusic.play();
+    backgroundMusic.pause();
     setTimeout(function() {
       alert("YOU WON! 🥳");
     }, 200);
