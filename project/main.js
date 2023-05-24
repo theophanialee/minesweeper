@@ -291,9 +291,9 @@ function floodNeighbour (x,y) {
   //recurssion: 
   // [1] condition to end the function
   // [2] x-y should always be different
+  
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) { 
-      let neighboutEl = document.getElementById(`${[x+i]}-${[y+j]}`);
       if (i == 0 && j == 0) {
         continue;
       }
@@ -303,14 +303,18 @@ function floodNeighbour (x,y) {
       if ((y+j) < 0 || (y+j) > gameElements.size) {
         continue;
       }
-      // if (!neighboutEl.classList.contains("hidden")) { // does not contain hidden ie revealed
-      //   continue;
-      // }
-      else {
+      let neighboutEl = document.getElementById(`${[x+i]}-${[y+j]}`);
+      console.log(neighboutEl);
+      if (!neighboutEl.classList.contains("hidden")) { // does not contain hidden ie revealed
+        continue;
+      }
+      if (gameElements.countArr[x][y] === 0) {
         neighboutEl.innerText = (`${gameElements.countArr[x+i][y+j]}`);
-        neighboutEl.classList.remove(gameElements.state);
-        neighboutEl.classList = (`N${gameElements.countArr[x+i][y+j]}`);
- 
+        neighboutEl.classList.remove("hidden");
+        neighboutEl.classList.add(`N${gameElements.countArr[x+i][y+j]}`);
+        floodNeighbour ((x+i),(y+j));
+      } else if (gameElements.countArr[x+i][y+j] !== 0){
+        break;
       }
     }
   }
