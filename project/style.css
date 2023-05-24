@@ -9,19 +9,19 @@ body {
 }
 
 h1 {
-  font-size: 70px;
+  font-size: 60px;
 }
 
 h3 {
   font-size: 25px;
   background-color: rgb(254, 239, 189);
   width: 300px;
-  height: 120px;
+  height: 160px;
   padding: 30px;
   border-radius: 10px;
   box-shadow: rgb(154, 152, 90) 0 10px 20px -10px;
   margin: 0 auto;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 #sizeEl {

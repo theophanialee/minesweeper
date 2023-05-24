@@ -109,7 +109,7 @@ function handleClick (e) {
     }
   } else if (gameElements.countArr[x][y] === 0) {
     clickCell.innerText = (`${gameElements.countArr[x][y]}`);
-    // floodNeighbour (x,y);
+    floodNeighbour (x,y);
    } else { 
         clickCell.innerText = (`${gameElements.countArr[x][y]}`);
       }
