@@ -1,5 +1,6 @@
 /* ----- state variables -----*/
 const gameElements = {
+  countArr: [],
   bombArr: [],
   size: 8,
   mines: 3,
@@ -38,13 +39,13 @@ function handleStart () {
   gameBoard.style.height = `${size*50}px`;
   gameBoard.style.width = `${size*50}px`;
   gameBoard.style.border = "5px solid white";
-  backgroundMusic.play();
+  // backgroundMusic.play();
 }
 
 function handleSetup() {
   // set up table as board size
   //create mines and spaces in seperate arrays > combine > randomise > split
-  backgroundMusic.play();
+  // backgroundMusic.play();
   const minesArray = Array(gameElements.mines).fill("bomb");
   const spacesArray = Array(gameElements.size*gameElements.size - gameElements.mines)
   .fill("0"); // 0 indicates space
@@ -53,6 +54,7 @@ function handleSetup() {
   const randomisedArray = combArray.sort(() => Math.random()-.5);
   gameElements.bombArr = rowArray(randomisedArray, gameElements.size);
   console.log("bombArr: ", gameElements.bombArr);
+  countBoard (); 
 render ();
 }
 
@@ -62,35 +64,36 @@ function handleClick (e) {
   clickCell.classList.remove(gameElements.state)
   let x = parseInt(clickCell.id[0]);
   let y = parseInt(clickCell.id[2]);
-  console.log(clickCell.id)
-  console.log("xcoord: ", x)
-  console.log("ycoord: ", y)
-  clickCell.classList.add(`N${countBombs(gameElements.bombArr,x,y)}`)
+  console.log("x-y coord id: ",clickCell.id)
+  clickCell.classList.add(`N${gameElements.countArr[x][y]}`)
   //put into render function?
-  if (gameElements.bombArr[x][y] === "bomb") {
+  if (gameElements.countArr[x][y] === "bomb") {
     clickCell.innerText = ("💣")
     resultMessage.innerText = "😵"
-    backgroundMusic.pause();
+    // backgroundMusic.pause();
     loseMusic.play();
     setTimeout(function() {
       alert("YOU LOSE! 😵");
     }, 200);
-
+    // to open all bombs in bombArr
      for (let i=0; i < gameElements.size; i++) {
       for (let j = 0; j < gameElements.size; j++) {
-        if (gameElements.bombArr[i][j] === "bomb" ) {
-        let cellElement = document.getElementById(`${[i]}-${[j]}`);
-          cellElement.innerText = ("💣")
-          cellElement.classList.add(`Nbomb`)
+        if (gameElements.countArr[i][j] === "bomb" ) {
+        let bombEl = document.getElementById(`${[i]}-${[j]}`);
+          bombEl.innerText = ("💣")
+          bombEl.classList.add(`Nbomb`)
         }
       }
     }
-  }
-  if (gameElements.bombArr[x][y] === "0") {
-    clickCell.innerText = (`${countBombs(gameElements.bombArr,x,y)}`)
-  }
-  console.log ("total: ",countBombs(gameElements.bombArr,x,y))
-  } 
+  } else if (gameElements.countArr[x][y] === 0) {
+    clickCell.innerText = (`${gameElements.countArr[x][y]}`);
+    floodNeighbour (x,y);
+   } else { 
+        clickCell.innerText = (`${gameElements.countArr[x][y]}`);
+      }
+      console.log ("total: ",countBombs(gameElements.bombArr,x,y))
+    }
+        
 
 function handleFlagging (e) {
   let flagCell = e.target;
@@ -175,8 +178,19 @@ function rowArray(array, chunkSize) {
   return result;
 }
 
-function countBombs (arr,x,y) {
+function countBoard () {
+  for (let i=0; i < gameElements.size; i++) {
+    let countRow = [];
+    for (let j = 0; j < gameElements.size; j++) {
+      let cellCount = countBombs(gameElements.bombArr,i,j);
+       countRow.push (cellCount);
+    }
+    gameElements.countArr.push (countRow);
+  }
+  console.log ("countArr: ",gameElements.countArr);
+}
 
+function countBombs (arr,x,y) {
   let total = 0
   if (arr[x][y] === "bomb") {
     total = "bomb"
@@ -204,6 +218,7 @@ function countBombs (arr,x,y) {
     return total
 }
 
+
 function checkWin (flagCell,x,y) {
   if (gameElements.bombArr[x][y] === "bomb" && flagCell.classList.contains("flag")) {
     gameElements.correctFlag++
@@ -211,11 +226,33 @@ function checkWin (flagCell,x,y) {
   if (gameElements.correctFlag === gameElements.mines) {
     resultMessage.innerText = "🥳";
     winMusic.play();
-    backgroundMusic.pause();
+    // backgroundMusic.pause();
     setTimeout(function() {
       alert("YOU WON! 🥳");
     }, 200);
   }
   console.log ("correct: ", gameElements.correctFlag)
+}
+
+function floodNeighbour (x,y) {
+  for (let i = -1; i <= 1; i++) {
+    for (let j = -1; j <= 1; j++) { 
+      if (i == 0 && j == 0) {
+        continue;
+      }
+      if ((x+i) < 0 || (x+i) > gameElements.size) {
+        continue;
+      }
+      if ((y+j) < 0 || (y+j) > gameElements.size) {
+        continue;
+      }
+      else {
+        let neighboutEl = document.getElementById(`${[x+i]}-${[y+j]}`);
+        neighboutEl.innerText = (`${gameElements.countArr[x+i][y+j]}`);
+        neighboutEl.classList.remove(gameElements.state);
+        neighboutEl.classList = (`N${gameElements.countArr[x+i][y+j]}`);
+      }
+    }
+  }
 }
 
