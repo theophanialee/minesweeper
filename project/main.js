@@ -45,12 +45,14 @@ function handleStart () {
 
 function handleSetup() {
   gameElements.correctFlag = 0;
-  gameElements.flags =0;
+  gameElements.flags = 0;
   gameBoard.addEventListener ("click", handleClick);
   gameBoard.addEventListener ("contextmenu", handleFlagging);
   // set up table as board size
   //create mines and spaces in seperate arrays > combine > randomise > split
-  // backgroundMusic.play();
+  winMusic.pause();
+  loseMusic.pause()
+  backgroundMusic.play();
   const minesArray = Array(gameElements.mines).fill("bomb");
   const spacesArray = Array(gameElements.size*gameElements.size - gameElements.mines)
   .fill("0"); // 0 indicates space
@@ -77,6 +79,7 @@ function handleClick (e) {
   } else if (gameElements.countArr[x][y] === "bomb") {
     clickCell.classList.remove(gameElements.state);
     resultMessage.innerText = "😵"
+    backgroundMusic.pause();
     loseMusic.play();
     clickCell.classList.add(`Nbomb`)
     gameBoard.removeEventListener ("click", handleClick);
@@ -138,13 +141,11 @@ function handleFlagging (e) {
 function render() {
 renderNewBoard();
 renderScreen();
-// renderAltWin ();
 };
 
 function renderScreen() {
   startScreen.classList.add("hide");
-  gameScreen.classList.add("hide");
-  // scoreScreen.classList.add("hide");
+  gameScreen.classList.add("hide"); 
   document.querySelector(`#${display.screen}`).classList.remove("hide"); //to alter the information to show the screen
 }
 
@@ -170,6 +171,7 @@ function renderAltWin () {
   console.log("hidden: ", hiddenCells.length)
   if (hiddenCells.length === gameElements.mines) {
     resultMessage.innerText = "🥳";
+    backgroundMusic.pause();
     winMusic.play();
     gameBoard.removeEventListener ("click", handleClick);
     gameBoard.removeEventListener ("contextmenu", handleFlagging);
@@ -182,6 +184,7 @@ function checkWin (flagCell,x,y) {
   }
   if (gameElements.correctFlag === gameElements.mines) {
     resultMessage.innerText = "🥳";
+    backgroundMusic.pause();
     winMusic.play();
     gameBoard.removeEventListener ("click", handleClick);
     gameBoard.removeEventListener ("contextmenu", handleFlagging);

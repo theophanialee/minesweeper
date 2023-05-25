@@ -29,6 +29,19 @@ h1 {
 				  -1px -1px 5px #484848;
 }
 
+h2 {
+  background-color: #f6c7d9;
+  height: 40px;
+  width: 40px;
+  border-radius: 10px;
+  margin: 0 auto;
+  margin-bottom: 5px;
+  box-shadow: rgb(154, 152, 90) 0 10px 20px -10px;
+  padding: 10px 5px 0px 5px;
+  background-image: url("./result.png");
+  background-size: cover;
+}
+
 h3 {
   font-size: 30px;
   /* background-color: rgb(254, 239, 189); */
