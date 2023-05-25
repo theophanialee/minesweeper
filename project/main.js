@@ -39,7 +39,7 @@ function handleStart () {
   gameElements.mines = size*2-5; 
   gameBoard.style.height = `${size*30}px`;
   gameBoard.style.width = `${size*30}px`;
-  gameBoard.style.border = "5px solid white";
+  gameBoard.style.border = "5px solid #ffee9c";
   // backgroundMusic.play();
 }
 
@@ -75,7 +75,6 @@ function handleClick (e) {
   if (clickCell.classList.contains("flag")) {
     return;
   } else if (gameElements.countArr[x][y] === "bomb") {
-    clickCell.innerText = ("💣")
     clickCell.classList.remove(gameElements.state);
     resultMessage.innerText = "😵"
     loseMusic.play();
@@ -87,7 +86,6 @@ function handleClick (e) {
       for (let j = 0; j < gameElements.size; j++) {
         if (gameElements.countArr[i][j] === "bomb" ) {
         let bombEl = document.getElementById(`${[i]}-${[j]}`);
-          bombEl.innerText = ("💣")
           bombEl.classList.add(`Nbomb`)
         }
       }
@@ -115,20 +113,21 @@ function handleFlagging (e) {
   let x = extractCellId (flagCell)[0];
   let y = extractCellId (flagCell)[1];
   console.log("flag: ",flagCell.id)
+  if (flagCell.classList.contains(`N${gameElements.countArr[x][y]}`)) {
+    return;
+  }
   if (gameElements.flags === gameElements.mines && !flagCell.classList.contains("flag")) {
     return;
   }
   if (flagCell.classList.contains("flag") === true) {
     flagCell.classList.remove("flag") ;
-    flagCell.innerText = "";
     gameElements.flags-=1;
-    flagCount.innerText = `Flags: ${gameElements.mines - gameElements.flags}`;
+    flagCount.innerText = `Clean: ${gameElements.mines - gameElements.flags}`;
   } 
     else if (flagCell.classList.contains("flag") === false) {
     flagCell.classList.add("flag"); 
-    flagCell.innerText = "🚩";
     gameElements.flags+=1;
-    flagCount.innerText = `Flags: ${gameElements.mines - gameElements.flags}`;
+    flagCount.innerText = `Clean: ${gameElements.mines - gameElements.flags}`;
   } 
   checkWin (flagCell, x,y);
   console.log("flags: ", gameElements.flags);
@@ -152,7 +151,7 @@ function renderScreen() {
 function renderNewBoard () {
 //refresh the board
   gameBoard.innerHTML = '';
-  flagCount.innerText = `Flags: ${[gameElements.mines]}`
+  flagCount.innerText = `Clean: ${[gameElements.mines]}`
   resultMessage.innerText = "😊"
 //running the new board
   for (let i=0; i < gameElements.size; i++) {

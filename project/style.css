@@ -5,7 +5,7 @@ body {
   text-align: center;
   background-image: url("./background.png");
   background-size: cover;
-  line-height: 25px;
+  line-height: 28px;
   height: 100vh;
 }
 
@@ -33,11 +33,11 @@ h3 {
   font-size: 30px;
   /* background-color: rgb(254, 239, 189); */
   width: 450px;
-  height: 180px;
+  height: 190px;
   border-radius: 5px;
   box-shadow: rgb(154, 152, 90) 0 10px 20px -10px;
   margin: 0 auto;
-  padding-top: 45px;
+  padding-top: 35px;
   overflow: hidden;
   background-image: url("./windows.jpeg");
   background-size: cover;
@@ -82,15 +82,15 @@ div {
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  background-color: rgb(202, 235, 255);
-  box-shadow: rgb(178, 245, 255) 0 10px 20px -10px;
+  background-color: #e2e1ff;
+  box-shadow: #e2e1ff 0 10px 20px -10px;
 }
 
 cell {
   height: 28px;
   width: 28px;
-  background-color: rgb(162, 212, 255);
-  border: 1px solid rgb(211, 235, 255);
+  background-color: #9a96ff;
+  border: 1px solid #ffee9c;
   box-shadow: rgb(178, 245, 255) 0 10px 20px -10px;
   border-radius: 5px;
   font-size: 30px;
@@ -107,7 +107,6 @@ button {
   font-family: VT323;
   height: 40px;
   width: 100px;
-  background: #f4dee4;
   border-radius: 5px;
   box-shadow: rgb(95, 91, 100) 0 10px 20px -10px;
   color: rgb(89, 89, 89);
@@ -133,12 +132,14 @@ input {
 }
 
 .Nbomb {
-  background-color: rgb(136, 106, 83);
+  background-color: rgb(229, 212, 177);
   font-size: 15px;
+  background-image: url("./coffee.png");
+  background-size: cover;
 }
 
 .N0 {
-  background-color: rgb(230, 241, 255);
+  background-color: rgb(235, 238, 255);
   color: rgb(230, 241, 255);
   font-size: 20px;
   
@@ -146,48 +147,50 @@ input {
 
 .N1 {
   color: blue;
-  background-color: rgb(230, 241, 255);
+  background-color: rgb(235, 238, 255);
 }
 
 .N2 {
   color: rgb(42, 188, 42);
-  background-color: rgb(230, 241, 255);
+  background-color: rgb(235, 238, 255);
 }
 
 .N3 {
   color: rgb(255, 0, 0);
-  background-color: rgb(230, 241, 255);
+  background-color: rgb(235, 238, 255);
 }
 
 .N4 {
   color: darkblue;
-  background-color: rgb(230, 241, 255);
+  background-color: rgb(235, 238, 255);
   }
 
   .N5 {
     color: rgb(188, 98, 42);
-    background-color: rgb(230, 241, 255);
+    background-color: rgb(235, 238, 255);
   }
 
   .N6 {
     color: rgb(156, 42, 188);
-    background-color: rgb(230, 241, 255);
+    background-color: rgb(235, 238, 255);
   }
 
   .N7 {
     color: rgb(42, 188, 168);
-    background-color: rgb(230, 241, 255);
+    background-color: rgb(235, 238, 255);
   }
 
   .N8 {
     color: rgb(207, 167, 34);
-    background-color: rgb(230, 241, 255);
+    background-color: rgb(235, 238, 255);
   }
 
 
 .flag {
-  background-color: rgb(202	239	184);
+  background-color: rgb(242, 239, 255);
   font-size: 15px;
+  background-image: url("./flag.png");
+  background-size: cover;
 }
 
 
