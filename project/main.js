@@ -298,10 +298,10 @@ function floodNeighbour (x,y) {
       if (i == 0 && j == 0) {
         continue;
       }
-      if ((x+i) < 0 || (x+i) > gameElements.size) {
+      if ((x+i) < 0 || (x+i) >= gameElements.size) {
         continue;
       }
-      if ((y+j) < 0 || (y+j) > gameElements.size) {
+      if ((y+j) < 0 || (y+j) >= gameElements.size) {
         continue;
       }
       let neighboutEl = document.getElementById(`${[x+i]}-${[y+j]}`);
