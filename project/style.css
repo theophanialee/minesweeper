@@ -132,7 +132,7 @@ input {
 }
 
 .Nbomb {
-  background-color: rgb(229, 212, 177);
+  background-color: rgb(217, 193, 145);
   font-size: 15px;
   background-image: url("./coffee.png");
   background-size: cover;
@@ -187,7 +187,7 @@ input {
 
 
 .flag {
-  background-color: rgb(242, 239, 255);
+  background-color: rgb(255, 253, 220);
   font-size: 15px;
   background-image: url("./flag.png");
   background-size: cover;

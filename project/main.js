@@ -39,7 +39,7 @@ function handleStart () {
   gameElements.mines = size*2-5; 
   gameBoard.style.height = `${size*30}px`;
   gameBoard.style.width = `${size*30}px`;
-  gameBoard.style.border = "5px solid #ffee9c";
+  gameBoard.style.border = "10px solid #f6c7d9";
   // backgroundMusic.play();
 }
 
