@@ -91,9 +91,9 @@ function handleClick (e) {
     resultMessage.innerText = "😵"
     // backgroundMusic.pause();
     loseMusic.play();
-    setTimeout(function() {
-      alert("YOU LOSE! 😵");
-    }, 200);
+    // setTimeout(function() {
+    //   alert("YOU LOSE! 😵");
+    // }, 200);
     clickCell.classList.add(`Nbomb`)
     gameBoard.removeEventListener ("click", handleClick);
     gameBoard.removeEventListener ("contextmenu", handleFlagging);
@@ -186,9 +186,9 @@ function renderAltWin () {
     resultMessage.innerText = "🥳";
     winMusic.play();
     // backgroundMusic.pause();
-    setTimeout(function() {
-      alert("YOU WON! 🥳");
-    }, 200);
+    // setTimeout(function() {
+    //   alert("YOU WON! 🥳");
+    // }, 200);
     gameBoard.removeEventListener ("click", handleClick);
     gameBoard.removeEventListener ("contextmenu", handleFlagging);
   }
