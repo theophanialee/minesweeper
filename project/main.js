@@ -18,6 +18,7 @@ const display = {
 /* ----- cached elements  -----*/
 const sizeButton = document.querySelector("#sizeButton");
 const sizeInput = document.querySelector("#sizeEl");
+const frontPageDiv = document.querySelector ("h3")
 const startScreen = document.querySelector("#startScreen");
 const gameScreen = document.querySelector("#gameScreen");
 const gameBoard = document.querySelector("#gameBoard");
@@ -43,7 +44,8 @@ function handleStart () {
 }
 
 function handleSetup() {
-  gameElements.flags =0
+  gameElements.correctFlag = 0;
+  gameElements.flags =0;
   gameBoard.addEventListener ("click", handleClick);
   gameBoard.addEventListener ("contextmenu", handleFlagging);
   // set up table as board size
@@ -113,18 +115,21 @@ function handleFlagging (e) {
   let x = extractCellId (flagCell)[0];
   let y = extractCellId (flagCell)[1];
   console.log("flag: ",flagCell.id)
-  let flagCellEl = document.getElementById(`${x}-${y}`)
-  if (flagCell.classList.contains("flag") === false) {
-    flagCell.classList.add("flag"); 
-    flagCell.innerText = "🚩";
-    gameElements.flags+=1;
-    flagCount.innerText = `Flags: ${gameElements.mines - gameElements.flags}`;
-  } else if (flagCell.classList.contains("flag") === true) {
+  if (gameElements.flags === gameElements.mines && !flagCell.classList.contains("flag")) {
+    return;
+  }
+  if (flagCell.classList.contains("flag") === true) {
     flagCell.classList.remove("flag") ;
     flagCell.innerText = "";
     gameElements.flags-=1;
     flagCount.innerText = `Flags: ${gameElements.mines - gameElements.flags}`;
-  }
+  } 
+    else if (flagCell.classList.contains("flag") === false) {
+    flagCell.classList.add("flag"); 
+    flagCell.innerText = "🚩";
+    gameElements.flags+=1;
+    flagCount.innerText = `Flags: ${gameElements.mines - gameElements.flags}`;
+  } 
   checkWin (flagCell, x,y);
   console.log("flags: ", gameElements.flags);
   }
@@ -197,6 +202,7 @@ function main() {
   gameBoard.addEventListener ("contextmenu", handleFlagging);
   gameBoard.addEventListener ("click", handleClick);
   }
+
   //run the main function
 main();
 

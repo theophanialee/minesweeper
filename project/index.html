@@ -5,35 +5,33 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Dongle&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  
     <title>Minesweeper</title>
   </head>
   <body>
     
     <script type="module" src="/main.js"></script>
     <script type="module" src="/main.js"></script>
-
-    <p style="background-image: url('background.jpeg');">
-    
   
-  <div id="startScreen">
-   
+  <div id="startScreen" class="grid-container">
+  
     <h1>Welcome to Minesweeper</h1>
     <audio id="backgroundMusic" src="Closer with Paul Blanco Mahalia.mp3" ></audio>
     <audio id="loseMusic" src="lose.mp3"></audio>
     <audio id="winMusic" src="win.mp3"></audio>
 
-    <h3> TO WIN:
+    <h3 id = "instructions"> TO WIN:
       <br> Flag all the bombs! 
-      <br> OR Open all cells without the bomb
-      <br> <i>The 'Flags:' count above your board is the number of bombs </i>
+      <br> OR 
+      <br> Open all cells without the bomb
+      <br> <span class="note"><i> ('Flags: above your board is the number of bombs) </i></span>
     </h3>
+    
     <h3 id="sizeEl">Enter your board size: 
       <br> <input id="sizeInput"/>
-      <br> <i>(eg 8 generates a 8x8 board)</i>
+      <br><span class="note"><i>(eg 8 generates a 8x8 board)</i></span>
       <br> <button id="sizeButton">Start</button>
     </h3>
   </div>
