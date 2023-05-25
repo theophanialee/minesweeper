@@ -78,7 +78,7 @@ function handleClick (e) {
     return;
   } else if (gameElements.countArr[x][y] === "bomb") {
     clickCell.classList.remove(gameElements.state);
-    resultMessage.innerText = "😵"
+    resultMessage.innerText = "SLIPPED 😵 FALL"
     backgroundMusic.pause();
     loseMusic.play();
     clickCell.classList.add(`Nbomb`)
@@ -170,7 +170,7 @@ function renderAltWin () {
   const hiddenCells = document.querySelectorAll(".hidden");
   console.log("hidden: ", hiddenCells.length)
   if (hiddenCells.length === gameElements.mines) {
-    resultMessage.innerText = "🥳";
+    resultMessage.innerText = "YOU 🥳 WON";
     backgroundMusic.pause();
     winMusic.play();
     gameBoard.removeEventListener ("click", handleClick);
@@ -183,7 +183,7 @@ function checkWin (flagCell,x,y) {
     gameElements.correctFlag++
   }
   if (gameElements.correctFlag === gameElements.mines) {
-    resultMessage.innerText = "🥳";
+    resultMessage.innerText = "YOU 🥳 WON";
     backgroundMusic.pause();
     winMusic.play();
     gameBoard.removeEventListener ("click", handleClick);
