@@ -277,7 +277,7 @@ function countBombs (arr,x,y) {
 
 
 function floodNeighbour (x,y) {
-  //to locate cells surrounding x,y and unhide them
+    //to locate cells surrounding x,y and unhide them
   // conditions to unhide surrounding cells: 
   // if its not a bomb (space or count)
   // re-run the function on surrounding cell if that surrounding cell = 0
@@ -291,7 +291,8 @@ function floodNeighbour (x,y) {
   //recurssion: 
   // [1] condition to end the function
   // [2] x-y should always be different
-  
+
+
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) { 
       if (i == 0 && j == 0) {
