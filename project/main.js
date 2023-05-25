@@ -36,8 +36,8 @@ function handleStart () {
   const size = parseInt(inputSize.value);
   gameElements.size = size;
   gameElements.mines = size*2-5; 
-  gameBoard.style.height = `${size*50}px`;
-  gameBoard.style.width = `${size*50}px`;
+  gameBoard.style.height = `${size*30}px`;
+  gameBoard.style.width = `${size*30}px`;
   gameBoard.style.border = "5px solid white";
   // backgroundMusic.play();
 }
@@ -65,35 +65,18 @@ function handleClick (e) {
   gameBoard.addEventListener ("click", handleClick);
   let clickCell = e.target;
   console.log(clickCell)
-  clickCell.classList.remove(gameElements.state);
-  let x = "";
-  let y = "";
-  if (clickCell.id.length === 3) {
-   x = parseInt(clickCell.id[0]);
-   y = parseInt(clickCell.id[2]);
-  } else if (clickCell.id.length === 4 && clickCell.id[1] === "-") {
-    x = parseInt(clickCell.id[0]);
-    y = parseInt(clickCell.id[2] + clickCell.id[3]);
-  } else if (clickCell.id.length === 4 && clickCell.id[2] === "-") {
-    x = parseInt(clickCell.id[0] + clickCell.id[1]);
-    y = parseInt(clickCell.id[3]);
-  }
-  else if (clickCell.id.length === 5) {
-    x = parseInt(clickCell.id[0] + clickCell.id[1]);
-    y = parseInt(clickCell.id[3] + clickCell.id[4]);
-  }
+  extractCellId (clickCell);
+  let x = extractCellId (clickCell)[0];
+  let y = extractCellId (clickCell)[1];
   console.log("x-y coord id: ",clickCell.id)
   console.log(gameElements.countArr[x][y]);
-  clickCell.classList.add(`N${gameElements.countArr[x][y]}`)
-  //put into render function?
-  if (gameElements.countArr[x][y] === "bomb") {
+  if (clickCell.classList.contains("flag")) {
+    return;
+  } else if (gameElements.countArr[x][y] === "bomb") {
     clickCell.innerText = ("💣")
+    clickCell.classList.remove(gameElements.state);
     resultMessage.innerText = "😵"
-    // backgroundMusic.pause();
     loseMusic.play();
-    // setTimeout(function() {
-    //   alert("YOU LOSE! 😵");
-    // }, 200);
     clickCell.classList.add(`Nbomb`)
     gameBoard.removeEventListener ("click", handleClick);
     gameBoard.removeEventListener ("contextmenu", handleFlagging);
@@ -109,9 +92,13 @@ function handleClick (e) {
     }
   } else if (gameElements.countArr[x][y] === 0) {
     clickCell.innerText = (`${gameElements.countArr[x][y]}`);
+    clickCell.classList.remove(gameElements.state);
+    clickCell.classList.add(`N${gameElements.countArr[x][y]}`)
     floodNeighbour (x,y);
    } else { 
         clickCell.innerText = (`${gameElements.countArr[x][y]}`);
+        clickCell.classList.remove(gameElements.state);
+        clickCell.classList.add(`N${gameElements.countArr[x][y]}`)
       }
       console.log ("total: ",countBombs(gameElements.bombArr,x,y));
       renderAltWin();
@@ -122,12 +109,11 @@ function handleFlagging (e) {
   gameBoard.addEventListener("contextmenu", handleFlagging);
   let flagCell = e.target;
   e.preventDefault()
-  // console.log (flagCell.classList.value);
-  // console.log (flagCell.className);
-  let x = parseInt(flagCell.id[0]);
-  let y = parseInt(flagCell.id[2]);
-  console.log(flagCell.id)
-  console.log(flagCell);
+  extractCellId (flagCell);
+  let x = extractCellId (flagCell)[0];
+  let y = extractCellId (flagCell)[1];
+  console.log("flag: ",flagCell.id)
+  let flagCellEl = document.getElementById(`${x}-${y}`)
   if (flagCell.classList.contains("flag") === false) {
     flagCell.classList.add("flag"); 
     flagCell.innerText = "🚩";
@@ -138,10 +124,6 @@ function handleFlagging (e) {
     flagCell.innerText = "";
     gameElements.flags-=1;
     flagCount.innerText = `Flags: ${gameElements.mines - gameElements.flags}`;
-  }
-  let flagEl = document.querySelectorAll(".flag")
-  if (flagEl.length >= gameElements.mines) {
-    gameBoard.removeEventListener("contextmenu", handleFlagging);
   }
   checkWin (flagCell, x,y);
   console.log("flags: ", gameElements.flags);
@@ -185,10 +167,6 @@ function renderAltWin () {
   if (hiddenCells.length === gameElements.mines) {
     resultMessage.innerText = "🥳";
     winMusic.play();
-    // backgroundMusic.pause();
-    // setTimeout(function() {
-    //   alert("YOU WON! 🥳");
-    // }, 200);
     gameBoard.removeEventListener ("click", handleClick);
     gameBoard.removeEventListener ("contextmenu", handleFlagging);
   }
@@ -201,10 +179,6 @@ function checkWin (flagCell,x,y) {
   if (gameElements.correctFlag === gameElements.mines) {
     resultMessage.innerText = "🥳";
     winMusic.play();
-    // backgroundMusic.pause();
-    setTimeout(function() {
-      alert("YOU WON! 🥳");
-    }, 200);
     gameBoard.removeEventListener ("click", handleClick);
     gameBoard.removeEventListener ("contextmenu", handleFlagging);
   }
@@ -275,22 +249,21 @@ function countBombs (arr,x,y) {
     return total
 }
 
-
 function floodNeighbour (x,y) {
-    //to locate cells surrounding x,y and unhide them
-  // conditions to unhide surrounding cells: 
-  // if its not a bomb (space or count)
-  // re-run the function on surrounding cell if that surrounding cell = 0
-  // keep the function running until no more surrounding cells = 0 or already revealed
-  // if no class "hidden" (ie already revealed), move to the next adjacent cell
+  //recurssion
+  // [1] condition to end the function
+  // [2] x-y should always be different
+
+  // move to the next adjacent cell if:
+  // [1] no class "hidden"
+  // [2] flagged cell
+
+  // break function when:
+  // [1] no more surrounding cells 0
   
   // unhide function: 
   // remove class "hidden"
   // add class "N arr[x][y]" (x-y is id of cellEl)
-
-  //recurssion: 
-  // [1] condition to end the function
-  // [2] x-y should always be different
 
 
   for (let i = -1; i <= 1; i++) {
@@ -305,8 +278,10 @@ function floodNeighbour (x,y) {
         continue;
       }
       let neighboutEl = document.getElementById(`${[x+i]}-${[y+j]}`);
-      console.log(neighboutEl);
       if (!neighboutEl.classList.contains("hidden")) { // does not contain hidden ie revealed
+        continue;
+      }
+      if (neighboutEl.classList.contains("flag")) { // if flagged
         continue;
       }
       if (gameElements.countArr[x][y] === 0) {
@@ -319,4 +294,24 @@ function floodNeighbour (x,y) {
       }
     }
   }
+}
+
+function extractCellId (targetCell) {
+  let x = "";
+  let y = "";
+  if (targetCell.id.length === 3) {
+    x = parseInt(targetCell.id[0]);
+    y = parseInt(targetCell.id[2]);
+   } else if (targetCell.id.length === 4 && targetCell.id[1] === "-") {
+     x = parseInt(targetCell.id[0]);
+     y = parseInt(targetCell.id[2] + targetCell.id[3]);
+   } else if (targetCell.id.length === 4 && targetCell.id[2] === "-") {
+     x = parseInt(targetCell.id[0] + targetCell.id[1]);
+     y = parseInt(targetCell.id[3]);
+   }
+   else if (targetCell.id.length === 5) {
+     x = parseInt(targetCell.id[0] + targetCell.id[1]);
+     y = parseInt(targetCell.id[3] + targetCell.id[4]);
+   }
+   return [x,y]
 }
