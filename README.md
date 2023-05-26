@@ -60,9 +60,9 @@ To increase difficulty, try increasing the board size. In Pha Cafe, it is possil
 
 ## Ideation Sketch
 
-![Framework](https://miro.com/app/board/uXjVMImBMrI=/)
+Framework: (https://miro.com/app/board/uXjVMImBMrI=/)
 
-![Pseudocode] (https://dark-fahrenheit-42f.notion.site/Project-1-Build-a-browser-game-5d73fa033e71454db339d5755aecf11a)
+Pseudocode: (https://dark-fahrenheit-42f.notion.site/Project-1-Build-a-browser-game-5d73fa033e71454db339d5755aecf11a)
 
 ## Biggest challenge
 
