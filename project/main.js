@@ -69,6 +69,7 @@ function handleClick (e) {
   gameBoard.addEventListener ("click", handleClick);
   let clickCell = e.target;
   console.log(clickCell)
+  console.log("clickedCell: ",clickCell);
   extractCellId (clickCell);
   let x = extractCellId (clickCell)[0];
   let y = extractCellId (clickCell)[1];

@@ -59,9 +59,12 @@ To increase difficulty, try increasing the board size. In Pha Cafe, it is possil
 ## Ideation Sketch
 
 ![Code framework](https://miro.com/app/board/uXjVMImBMrI=/)
+
 ![Pseudocode] (https://dark-fahrenheit-42f.notion.site/Project-1-Build-a-browser-game-5d73fa033e71454db339d5755aecf11a)
 
 ## Biggest challenge
+
+Counting the bombs was a challenge for me as I was not able to understand the logic when using 2D arrays and loops.
 
 Floodfill mechanism using recurssion. It was very hard to imaging the floodfill mechanism at first. After many trials, I found myself looping and looping over a function which checks the neighbouring cells, similar to the one which counts the bombs surrounding the cell.
 
