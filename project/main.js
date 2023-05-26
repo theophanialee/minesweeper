@@ -61,7 +61,7 @@ function handleSetup() {
   //https://sebhastian.com/shuffle-array-javascript/
   const randomisedArray = combArray.sort(() => Math.random()-.5);
   gameElements.bombArr = rowArray(randomisedArray, gameElements.size);
-  console.log("bombArr: ", gameElements.bombArr);
+  // console.log("bombArr: ", gameElements.bombArr);
   countBoard (); 
 render ();
 }
@@ -69,13 +69,13 @@ render ();
 function handleClick (e) {
   gameBoard.addEventListener ("click", handleClick);
   let clickCell = e.target;
-  console.log(clickCell)
-  console.log("clickedCell: ",clickCell);
+  // console.log(clickCell)
+  // console.log("clickedCell: ",clickCell);
   extractCellId (clickCell);
   let x = extractCellId (clickCell)[0];
   let y = extractCellId (clickCell)[1];
-  console.log("x-y coord id: ",clickCell.id)
-  console.log(gameElements.countArr[x][y]);
+  // console.log("x-y coord id: ",clickCell.id)
+  // console.log(gameElements.countArr[x][y]);
   if (clickCell.classList.contains("flag")) {
     return;
   } else if (gameElements.countArr[x][y] === "bomb") {
@@ -105,7 +105,7 @@ function handleClick (e) {
         clickCell.classList.remove(gameElements.state);
         clickCell.classList.add(`N${gameElements.countArr[x][y]}`)
       }
-      console.log ("total: ",countBombs(gameElements.bombArr,x,y));
+      // console.log ("total: ",countBombs(gameElements.bombArr,x,y));
       renderAltWin();
     }
         
@@ -143,7 +143,7 @@ function sharedLogic(flagCell) {
   extractCellId (flagCell);
   let x = extractCellId (flagCell)[0];
   let y = extractCellId (flagCell)[1];
-  console.log("flag: ",flagCell.id)
+  // console.log("flag: ",flagCell.id)
   if (flagCell.classList.contains(`N${gameElements.countArr[x][y]}`)) {
     return;
   }
@@ -161,7 +161,7 @@ function sharedLogic(flagCell) {
     flagCount.innerText = `Clean: ${gameElements.mines - gameElements.flags}`;
   } 
   checkWin (flagCell, x,y);
-  console.log("flags: ", gameElements.flags);
+  // console.log("flags: ", gameElements.flags);
 }
  
 
@@ -197,7 +197,7 @@ function renderNewBoard () {
 
 function renderAltWin () {
   const hiddenCells = document.querySelectorAll(".hidden");
-  console.log("hidden: ", hiddenCells.length)
+  // console.log("hidden: ", hiddenCells.length)
   if (hiddenCells.length === gameElements.mines) {
     resultMessage.innerText = "YOU 🥳 WON";
     backgroundMusic.pause();
@@ -218,7 +218,7 @@ function checkWin (flagCell,x,y) {
     gameBoard.removeEventListener ("click", handleClick);
     gameBoard.removeEventListener ("contextmenu", handleFlagging);
   }
-  console.log ("correct: ", gameElements.correctFlag)
+  // console.log ("correct: ", gameElements.correctFlag)
 }
 
 /* ----- functions -----*/
@@ -257,7 +257,7 @@ function countBoard () {
     }
     gameElements.countArr.push (countRow);
   }
-  console.log ("countArr: ",gameElements.countArr);
+  // console.log ("countArr: ",gameElements.countArr);
 }
 
 function countBombs (arr,x,y) {
