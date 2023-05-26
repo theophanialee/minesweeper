@@ -40,7 +40,7 @@ function handleStart () {
   gameBoard.style.height = `${size*30}px`;
   gameBoard.style.width = `${size*30}px`;
   gameBoard.style.border = "10px solid #f6c7d9";
-  // backgroundMusic.play();
+  backgroundMusic.play();
 }
 
 function handleSetup() {
