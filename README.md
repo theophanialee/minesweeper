@@ -3,19 +3,21 @@
 ## Timeframe, Approach & Development --> 1 week
 
 [1] Day 1 Project planning and sketching
+
 [2] Day 1-3 - Replicate Minesweeper
 Main goal: Start small, build an expandable code
-
 - Generate Minesweeper board (4x4)
 - Matching the winning condition
 - Flagging event
 - On click event
-  [3] Day 4-5 - Expansions
+
+[3] Day 4-5 - Expansions
 - Customisable board size
 - Aleternative win: Through flagging
 - Floodfill mechanism
 - Render front screen to game screen and handle game over
-  [4] Day 6 - Styling
+
+[4] Day 6 - Styling
 - Replace render icons
 - Add audio
 
