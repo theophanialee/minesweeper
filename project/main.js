@@ -109,18 +109,34 @@ function handleClick (e) {
       renderAltWin();
     }
         
+let longPressTimer = 0
 
 function handleFlagging (e) {
-  gameBoard.addEventListener("contextmenu", handleFlagging);
   let flagCell = e.target;
   e.preventDefault();
   if (e.type === "contextmenu") {
     sharedLogic(flagCell);
   } else if (e.type === "touchstart") {
-    setTimeout(function () {
+    longPressTimer = setTimeout(function () {
       sharedLogic(flagCell);
-    }, 500);   
+    }, 700);   
   }
+}
+
+function handleTouchEnd(e) {
+  clearTimeout(longPressTimer);
+  let flagCell = e.target;
+  if (e.type === "touchend") {
+    // Simulating a click event on touch end
+    let clickEvent = new MouseEvent("click", {
+      bubbles: true,
+      cancelable: true,
+      view: window,
+    });
+    flagCell.dispatchEvent(clickEvent);
+    // Preventing the default touch events to avoid conflicts
+    e.preventDefault();
+}
 }
 
 function sharedLogic(flagCell) {
@@ -217,7 +233,7 @@ function main() {
   gameBoard.addEventListener ("contextmenu", handleFlagging);
   gameBoard.addEventListener ("click", handleClick);
   gameBoard.addEventListener("touchstart", handleFlagging);
- 
+  gameBoard.addEventListener("touchend", handleTouchEnd);
   }
 
   //run the main function
@@ -338,3 +354,4 @@ function extractCellId (targetCell) {
    }
    return [x,y]
 }
+
