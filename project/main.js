@@ -1,3 +1,6 @@
+/* constants */
+let longPressTimer = 0
+
 /* ----- state variables -----*/
 const gameElements = {
   countArr: [],
@@ -22,7 +25,7 @@ const frontPageDiv = document.querySelector ("h3")
 const startScreen = document.querySelector("#startScreen");
 const gameScreen = document.querySelector("#gameScreen");
 const gameBoard = document.querySelector("#gameBoard");
-const newButton = document.querySelector("#newButton");
+const againButton = document.querySelector("#againButton");
 const flagButton = document.querySelector("#flagButton");
 const resultMessage = document.querySelector("h2");
 const flagCount = document.querySelector("count");
@@ -31,29 +34,9 @@ const loseMusic = document.getElementById('loseMusic');
 const winMusic = document.getElementById('winMusic');
 
 /* ----- event listeners -----*/
-function handleStart () {
-  display.screen = "gameScreen";
-  const inputSize = document.querySelector("#sizeInput");
-  const size = parseInt(inputSize.value);
-  gameElements.size = size;
-  gameElements.mines = size*2-5; 
-  gameBoard.style.height = `${size*30}px`;
-  gameBoard.style.width = `${size*30}px`;
-  gameBoard.style.border = "10px solid #f6c7d9";
-  backgroundMusic.play();
-}
-
 function handleSetup() {
-  gameElements.correctFlag = 0;
-  gameElements.flags = 0;
-  gameBoard.addEventListener ("click", handleClick);
-  gameBoard.addEventListener ("contextmenu", handleFlagging);
   // set up table as board size
   //create mines and spaces in seperate arrays > combine > randomise > split
-  winMusic.pause();
-  loseMusic.pause()
-  backgroundMusic.play();
-  
   const minesArray = Array(gameElements.mines).fill("bomb");
   const spacesArray = Array(gameElements.size*gameElements.size - gameElements.mines)
   .fill("0"); // 0 indicates space
@@ -61,9 +44,9 @@ function handleSetup() {
   //https://sebhastian.com/shuffle-array-javascript/
   const randomisedArray = combArray.sort(() => Math.random()-.5);
   gameElements.bombArr = rowArray(randomisedArray, gameElements.size);
-  // console.log("bombArr: ", gameElements.bombArr);
-  countBoard (); 
-render ();
+  console.log("bombArr: ", gameElements.bombArr);
+  countBoard(); 
+  render();
 }
 
 function handleClick (e) {
@@ -79,67 +62,21 @@ function handleClick (e) {
   if (clickCell.classList.contains("flag")) {
     return;
   } else if (gameElements.countArr[x][y] === "bomb") {
-    clickCell.classList.remove(gameElements.state);
-    resultMessage.innerText = "SLIPPED 😵 FALL"
-    backgroundMusic.pause();
-    loseMusic.play();
-    clickCell.classList.add(`Nbomb`)
-    gameBoard.removeEventListener ("click", handleClick);
-    gameBoard.removeEventListener ("contextmenu", handleFlagging);
-    // to open all bombs in bombArr
-     for (let i=0; i < gameElements.size; i++) {
-      for (let j = 0; j < gameElements.size; j++) {
-        if (gameElements.countArr[i][j] === "bomb" ) {
-        let bombEl = document.getElementById(`${[i]}-${[j]}`);
-          bombEl.classList.add(`Nbomb`)
-        }
-      }
-    }
+    renderLose(clickCell);
+ 
   } else if (gameElements.countArr[x][y] === 0) {
-    clickCell.innerText = (`${gameElements.countArr[x][y]}`);
-    clickCell.classList.remove(gameElements.state);
-    clickCell.classList.add(`N${gameElements.countArr[x][y]}`)
+    renderBombCount (clickCell,x,y);
     floodNeighbour (x,y);
    } else { 
-        clickCell.innerText = (`${gameElements.countArr[x][y]}`);
-        clickCell.classList.remove(gameElements.state);
-        clickCell.classList.add(`N${gameElements.countArr[x][y]}`)
+    renderBombCount (clickCell,x,y);
       }
       // console.log ("total: ",countBombs(gameElements.bombArr,x,y));
       renderAltWin();
     }
-        
-let longPressTimer = 0
 
 function handleFlagging (e) {
   let flagCell = e.target;
   e.preventDefault();
-  if (e.type === "contextmenu") {
-    sharedLogic(flagCell);
-  } else if (e.type === "touchstart") {
-    longPressTimer = setTimeout(function () {
-      sharedLogic(flagCell);
-    }, 700);   
-  }
-}
-
-function handleTouchEnd(e) {
-  clearTimeout(longPressTimer);
-  let flagCell = e.target;
-  if (e.type === "touchend") {
-    // Simulating a click event on touch end
-    let clickEvent = new MouseEvent("click", {
-      bubbles: true,
-      cancelable: true,
-      view: window,
-    });
-    flagCell.dispatchEvent(clickEvent);
-    // Preventing the default touch events to avoid conflicts
-    e.preventDefault();
-}
-}
-
-function sharedLogic(flagCell) {
   extractCellId (flagCell);
   let x = extractCellId (flagCell)[0];
   let y = extractCellId (flagCell)[1];
@@ -153,24 +90,24 @@ function sharedLogic(flagCell) {
   if (flagCell.classList.contains("flag") === true) {
     flagCell.classList.remove("flag") ;
     gameElements.flags-=1;
-    flagCount.innerText = `Clean: ${gameElements.mines - gameElements.flags}`;
+    renderFlagCount();
   } 
     else if (flagCell.classList.contains("flag") === false) {
     flagCell.classList.add("flag"); 
     gameElements.flags+=1;
-    flagCount.innerText = `Clean: ${gameElements.mines - gameElements.flags}`;
+    renderFlagCount();
   } 
   checkWin (flagCell, x,y);
   // console.log("flags: ", gameElements.flags);
 }
- 
 
 
 /* ----- render functions -----*/
 function render() {
-renderNewBoard();
+createNewBoard();
 renderScreen();
-};
+renderSetup();
+}
 
 function renderScreen() {
   startScreen.classList.add("hide");
@@ -178,8 +115,31 @@ function renderScreen() {
   document.querySelector(`#${display.screen}`).classList.remove("hide"); //to alter the information to show the screen
 }
 
-function renderNewBoard () {
-//refresh the board
+function renderStart () {
+  display.screen = "gameScreen";
+  const inputSize = document.querySelector("#sizeInput");
+  const size = parseInt(inputSize.value);
+  gameElements.size = size;
+  gameElements.mines = size*2-5; 
+  gameBoard.style.height = `${size*30}px`;
+  gameBoard.style.width = `${size*30}px`;
+  gameBoard.style.border = "10px solid #f6c7d9";
+  backgroundMusic.play();
+}
+
+function renderSetup () {
+  gameElements.correctFlag = 0;
+  gameElements.flags = 0;
+  gameBoard.addEventListener ("click", handleClick);
+  gameBoard.addEventListener ("contextmenu", handleFlagging);
+  winMusic.pause();
+  loseMusic.pause()
+  backgroundMusic.play();
+  createNewBoard ();
+}
+
+function createNewBoard () {
+//refresh the board at gameScreen
   gameBoard.innerHTML = '';
   flagCount.innerText = `Clean: ${[gameElements.mines]}`
   resultMessage.innerText = "😊"
@@ -195,16 +155,49 @@ function renderNewBoard () {
   }
 }
 
+function renderBombCount (clickCell,x,y) {
+  clickCell.innerText = (`${gameElements.countArr[x][y]}`);
+  clickCell.classList.remove(gameElements.state);
+  clickCell.classList.add(`N${gameElements.countArr[x][y]}`)
+}
+
+function renderLose (clickCell) {
+  clickCell.classList.remove(gameElements.state);
+  resultMessage.innerText = "SLIPPED 😵 FALL"
+  backgroundMusic.pause();
+  loseMusic.play();
+  clickCell.classList.add(`Nbomb`)
+  gameBoard.removeEventListener ("click", handleClick);
+  gameBoard.removeEventListener ("contextmenu", handleFlagging);
+  // to open all bombs in bombArr
+   for (let i=0; i < gameElements.size; i++) {
+    for (let j = 0; j < gameElements.size; j++) {
+      if (gameElements.countArr[i][j] === "bomb" ) {
+      let bombEl = document.getElementById(`${[i]}-${[j]}`);
+        bombEl.classList.add(`Nbomb`)
+      }
+    }
+  }
+}
+
+function renderWin() {
+  resultMessage.innerText = "YOU 🥳 WON";
+  backgroundMusic.pause();
+  winMusic.play();
+  gameBoard.removeEventListener ("click", handleClick);
+  gameBoard.removeEventListener ("contextmenu", handleFlagging);
+}
+
 function renderAltWin () {
   const hiddenCells = document.querySelectorAll(".hidden");
   // console.log("hidden: ", hiddenCells.length)
   if (hiddenCells.length === gameElements.mines) {
-    resultMessage.innerText = "YOU 🥳 WON";
-    backgroundMusic.pause();
-    winMusic.play();
-    gameBoard.removeEventListener ("click", handleClick);
-    gameBoard.removeEventListener ("contextmenu", handleFlagging);
+    renderWin()
   }
+}
+
+function renderFlagCount () {
+  flagCount.innerText = `Clean: ${gameElements.mines - gameElements.flags}`;
 }
 
 function checkWin (flagCell,x,y) {
@@ -212,33 +205,12 @@ function checkWin (flagCell,x,y) {
     gameElements.correctFlag++
   }
   if (gameElements.correctFlag === gameElements.mines) {
-    resultMessage.innerText = "YOU 🥳 WON";
-    backgroundMusic.pause();
-    winMusic.play();
-    gameBoard.removeEventListener ("click", handleClick);
-    gameBoard.removeEventListener ("contextmenu", handleFlagging);
+    renderWin();
   }
   // console.log ("correct: ", gameElements.correctFlag)
 }
 
 /* ----- functions -----*/
-
-// upon event
-function main() {
-  sizeButton.addEventListener ("click", function() {
-    handleStart();
-    handleSetup ();
-  });
-  newButton.addEventListener ("click", handleSetup);
-  gameBoard.addEventListener ("contextmenu", handleFlagging);
-  gameBoard.addEventListener ("click", handleClick);
-  gameBoard.addEventListener("touchstart", handleFlagging);
-  gameBoard.addEventListener("touchend", handleTouchEnd);
-  }
-
-  //run the main function
-main();
-
 function rowArray(array, chunkSize) {
   const result = [];
   for (let i = 0; i < array.length; i += chunkSize) {
@@ -354,4 +326,20 @@ function extractCellId (targetCell) {
    }
    return [x,y]
 }
+
+
+function main() {
+  sizeButton.addEventListener ("click", function() {
+    renderStart();
+    handleSetup ();
+  });
+  againButton.addEventListener ("click", function() {
+    renderSetup();
+    handleSetup()
+  });
+  gameBoard.addEventListener ("contextmenu", handleFlagging);
+  gameBoard.addEventListener ("click", handleClick);
+  }
+
+main();
 
