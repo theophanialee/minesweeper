@@ -113,7 +113,17 @@ function handleClick (e) {
 function handleFlagging (e) {
   gameBoard.addEventListener("contextmenu", handleFlagging);
   let flagCell = e.target;
-  e.preventDefault()
+  e.preventDefault();
+  if (e.type === "contextmenu") {
+    sharedLogic(flagCell);
+  } else if (e.type === "touchstart") {
+    setTimeout(function () {
+      sharedLogic(flagCell);
+    }, 500);   
+  }
+}
+
+function sharedLogic(flagCell) {
   extractCellId (flagCell);
   let x = extractCellId (flagCell)[0];
   let y = extractCellId (flagCell)[1];
@@ -136,7 +146,8 @@ function handleFlagging (e) {
   } 
   checkWin (flagCell, x,y);
   console.log("flags: ", gameElements.flags);
-  }
+}
+ 
 
 
 /* ----- render functions -----*/
@@ -205,6 +216,8 @@ function main() {
   newButton.addEventListener ("click", handleSetup);
   gameBoard.addEventListener ("contextmenu", handleFlagging);
   gameBoard.addEventListener ("click", handleClick);
+  gameBoard.addEventListener("touchstart", handleFlagging);
+ 
   }
 
   //run the main function
