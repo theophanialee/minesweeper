@@ -53,6 +53,7 @@ function handleSetup() {
   winMusic.pause();
   loseMusic.pause()
   backgroundMusic.play();
+  
   const minesArray = Array(gameElements.mines).fill("bomb");
   const spacesArray = Array(gameElements.size*gameElements.size - gameElements.mines)
   .fill("0"); // 0 indicates space
