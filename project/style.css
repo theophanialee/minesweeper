@@ -3,7 +3,7 @@ body {
   font-family: VT323;
   color: #484848;
   text-align: center;
-  background-image: url("./background.png");
+  background-image: url("/background.png");
   background-size: cover;
   line-height: 24px;
   height: 100vh;
@@ -44,7 +44,7 @@ h2 {
   margin-bottom: 10px;
   box-shadow: rgb(154, 152, 90) 0 10px 20px -10px;
   padding: 13px 5px 0px 5px;
-  background-image: url("./result.png");
+  background-image: url("/result.png");
   background-size: cover;
 }
 
