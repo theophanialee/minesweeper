@@ -44,9 +44,10 @@ function handleSetup() {
   //https://sebhastian.com/shuffle-array-javascript/
   const randomisedArray = combArray.sort(() => Math.random()-.5);
   gameElements.bombArr = rowArray(randomisedArray, gameElements.size);
-  console.log("bombArr: ", gameElements.bombArr);
+  // console.log("bombArr: ", gameElements.bombArr);
   countBoard(); 
   render();
+  // console.log ("correctFlags: ", gameElements.correctFlag)
 }
 
 function handleClick (e) {
@@ -136,6 +137,7 @@ function renderSetup () {
   loseMusic.pause()
   backgroundMusic.play();
   createNewBoard ();
+  // console.log ("correctFlags: ", gameElements.correctFlag)
 }
 
 function createNewBoard () {
@@ -203,11 +205,13 @@ function renderFlagCount () {
 function checkWin (flagCell,x,y) {
   if (gameElements.bombArr[x][y] === "bomb" && flagCell.classList.contains("flag")) {
     gameElements.correctFlag++
+  } else if (gameElements.bombArr[x][y] !== "bomb" && !flagCell.classList.contains("flag")) {
+    gameElements.correctFlag--;
   }
   if (gameElements.correctFlag === gameElements.mines) {
     renderWin();
   }
-  // console.log ("correct: ", gameElements.correctFlag)
+  // console.log ("correctFlags: ", gameElements.correctFlag)
 }
 
 /* ----- functions -----*/
@@ -335,7 +339,7 @@ function main() {
   });
   againButton.addEventListener ("click", function() {
     renderSetup();
-    handleSetup()
+    handleSetup();
   });
   gameBoard.addEventListener ("contextmenu", handleFlagging);
   gameBoard.addEventListener ("click", handleClick);
