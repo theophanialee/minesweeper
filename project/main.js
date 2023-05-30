@@ -205,13 +205,13 @@ function renderFlagCount () {
 function checkWin (flagCell,x,y) {
   if (gameElements.bombArr[x][y] === "bomb" && flagCell.classList.contains("flag")) {
     gameElements.correctFlag++
-  } else if (gameElements.bombArr[x][y] !== "bomb" && !flagCell.classList.contains("flag")) {
+  } else if (gameElements.bombArr[x][y] === "bomb" && !flagCell.classList.contains("flag")) {
     gameElements.correctFlag--;
   }
   if (gameElements.correctFlag === gameElements.mines) {
     renderWin();
   }
-  // console.log ("correctFlags: ", gameElements.correctFlag)
+  console.log ("correctFlags: ", gameElements.correctFlag)
 }
 
 /* ----- functions -----*/
